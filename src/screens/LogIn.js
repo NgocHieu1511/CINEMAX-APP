@@ -60,7 +60,7 @@ export default function Login() {
 
           <View style={styles.passwordBox}>
             <TextInput
-              placeholder="••••••••••••••"
+              placeholder="•••••••••••••"
               placeholderTextColor="#8A8A9E"
               secureTextEntry={!passwordVisible}
               style={styles.passwordInput}
@@ -78,13 +78,15 @@ export default function Login() {
           </View>
         </View>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("ResetPassword")}>
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
 
         {/* Button */}
         <View style={styles.buttonWrap}>
-          <ButtonApp>Log In</ButtonApp>
+          <ButtonApp onPress={() => navigation.navigate("Home")}>
+            Log In
+          </ButtonApp>
         </View>
       </View>
     </SafeAreaView>

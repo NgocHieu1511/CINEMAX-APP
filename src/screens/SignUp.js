@@ -5,23 +5,21 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  StatusBar,
   Image,
+  SafeAreaView,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import ButtonApp from "../components/ButtonApp";
 
 export default function SignUp() {
   const navigation = useNavigation();
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [agree, setAgree] = useState(false);
-  const [hidePassword, setHidePassword] = useState(true);
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
-
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
@@ -36,22 +34,21 @@ export default function SignUp() {
         <View style={{ width: 36 }} />
       </View>
 
-      {/* Title */}
-      <View style={styles.hero}>
+      {/* Content */}
+      <View style={styles.content}>
         <Text style={styles.title}>Let’s get started</Text>
+
         <Text style={styles.subtitle}>
           The latest movies and series{"\n"}are here
         </Text>
-      </View>
 
-      {/* Form */}
-      <View style={styles.form}>
         {/* Full Name */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Full Name</Text>
+
           <TextInput
             placeholder="Tiffany"
-            placeholderTextColor="#6C6A7A"
+            placeholderTextColor="#8A8A9E"
             style={styles.input}
           />
         </View>
@@ -59,9 +56,10 @@ export default function SignUp() {
         {/* Email */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Email Address</Text>
+
           <TextInput
             placeholder="Tiffanyjearsey@gmail.com"
-            placeholderTextColor="#6C6A7A"
+            placeholderTextColor="#8A8A9E"
             style={styles.input}
           />
         </View>
@@ -70,19 +68,21 @@ export default function SignUp() {
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Password</Text>
 
-          <View style={styles.passwordWrapper}>
+          <View style={styles.passwordBox}>
             <TextInput
-              secureTextEntry={hidePassword}
-              placeholder="••••••••••••••••"
-              placeholderTextColor="#6C6A7A"
+              placeholder="•••••••••••••"
+              placeholderTextColor="#8A8A9E"
+              secureTextEntry={!passwordVisible}
               style={styles.passwordInput}
             />
 
-            <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
+            <TouchableOpacity
+              onPress={() => setPasswordVisible(!passwordVisible)}
+            >
               <Ionicons
-                name={hidePassword ? "eye-off-outline" : "eye-outline"}
-                size={20}
-                color="#6C6A7A"
+                name={passwordVisible ? "eye" : "eye-off"}
+                size={22}
+                color="#7C7C90"
               />
             </TouchableOpacity>
           </View>
@@ -99,31 +99,24 @@ export default function SignUp() {
 
           <Text style={styles.termsText}>
             I agree to the <Text style={styles.link}>Terms and Services</Text>
-            {"\n"}and <Text style={styles.link}>Privacy Policy</Text>
+            {"\n"}
+            and <Text style={styles.link}>Privacy Policy</Text>
           </Text>
         </View>
 
         {/* Button */}
-        <TouchableOpacity style={styles.buttonWrap}>
-          <LinearGradient
-            colors={["#12CDD9", "#28D6E3"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Sign Up</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+        <View style={styles.buttonWrap}>
+          <ButtonApp>Sign Up</ButtonApp>
+        </View>
       </View>
     </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1F1D2B",
-    paddingHorizontal: 24,
+    paddingHorizontal: 22,
   },
 
   header: {
@@ -133,70 +126,89 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 
-  backButton: {
+  backBtn: {
     width: 32,
     height: 32,
-    borderRadius: 16,
-    backgroundColor: "#252836",
-    alignItems: "center",
+    borderRadius: 12,
+    backgroundColor: "#1F1F38",
     justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 24,
   },
 
   headerTitle: {
     color: "#FFF",
-    fontSize: 18,
-    fontWeight: "600",
+    textAlign: "center",
+    fontFamily: "MontserratSemiBold",
+    fontSize: 16,
+    letterSpacing: 0.12,
   },
 
-  hero: {
-    alignItems: "center",
-    marginTop: 45,
+  content: {
+    marginTop: 46,
+    paddingHorizontal: 24,
   },
 
   title: {
     color: "#FFF",
-    fontSize: 32,
-    fontWeight: "700",
+    fontFamily: "MontserratSemiBold",
+    fontSize: 24,
+    textAlign: "center",
+    letterSpacing: 0.12,
   },
 
   subtitle: {
-    color: "#92929D",
-    fontSize: 14,
+    color: "#EBEBEF",
     textAlign: "center",
-    marginTop: 12,
-    lineHeight: 22,
-  },
-
-  form: {
-    marginTop: 50,
+    fontFamily: "MontserratMedium",
+    fontSize: 12,
+    letterSpacing: 0.12,
+    marginTop: 8,
   },
 
   inputGroup: {
-    marginBottom: 22,
+    marginTop: 48,
+    position: "relative",
   },
 
   label: {
-    color: "#FFF",
-    fontSize: 13,
-    marginBottom: 10,
+    position: "absolute",
+    top: -8,
+    left: 18,
+    zIndex: 10,
+    backgroundColor: "#1F1D2B",
+    paddingHorizontal: 8,
+
+    color: "#EBEBEF",
+    fontFamily: "MontserratMedium",
+    fontSize: 12,
+    letterSpacing: 0.12,
   },
 
   input: {
-    height: 52,
-    borderRadius: 26,
+    height: 72,
+    borderRadius: 24,
     borderWidth: 1,
     borderColor: "#252836",
+
     paddingHorizontal: 18,
-    color: "#FFF",
+    paddingTop: 20,
+
+    color: "#92929D",
+    fontFamily: "MontserratMedium",
     fontSize: 14,
+    letterSpacing: 0.12,
   },
 
-  passwordWrapper: {
-    height: 52,
-    borderRadius: 26,
+  passwordBox: {
+    paddingBottom: 18,
+    borderRadius: 24,
     borderWidth: 1,
     borderColor: "#252836",
+
     paddingHorizontal: 18,
+    paddingTop: 20,
+
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -204,24 +216,25 @@ const styles = StyleSheet.create({
 
   passwordInput: {
     flex: 1,
-    color: "#FFF",
+    color: "#92929D",
+    fontFamily: "MontserratMedium",
     fontSize: 14,
+    letterSpacing: 0.12,
   },
 
   checkboxRow: {
     flexDirection: "row",
     alignItems: "flex-start",
-    marginTop: 5,
+    marginTop: 20,
   },
 
   checkbox: {
-    width: 22,
-    height: 22,
+    width: 24,
+    height: 24,
     borderWidth: 1.5,
     borderColor: "#6C6A7A",
     borderRadius: 5,
-    marginTop: 2,
-    marginRight: 12,
+    marginRight: 10,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -232,9 +245,11 @@ const styles = StyleSheet.create({
   },
 
   termsText: {
+    flex: 1,
     color: "#92929D",
     fontSize: 12,
-    lineHeight: 20,
+    lineHeight: 18,
+    fontFamily: "MontserratMedium",
   },
 
   link: {
@@ -242,19 +257,7 @@ const styles = StyleSheet.create({
   },
 
   buttonWrap: {
-    marginTop: 42,
-  },
-
-  button: {
-    height: 56,
-    borderRadius: 28,
+    marginTop: 40,
     alignItems: "center",
-    justifyContent: "center",
-  },
-
-  buttonText: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "600",
   },
 });

@@ -8,6 +8,12 @@ import SplashScreen from "./src/screens/SplashScreen";
 import LoginSignUp from "./src/screens/LogInSignUp";
 import Login from "./src/screens/LogIn";
 import SignUp from "./src/screens/SignUp";
+import ResetPassword from "./src/screens/ResetPassword";
+import Verification from "./src/screens/Verification";
+import CreateNewPassword from "./src/screens/CreateNewPassword";
+import Home from "./src/screens/Home";
+import Search from "./src/screens/Search";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const Stack = createNativeStackNavigator();
@@ -41,6 +47,8 @@ export default function App() {
 
     MontserratThin: require("./assets/fonts/Montserrat-Thin.ttf"),
     MontserratThinItalic: require("./assets/fonts/Montserrat-ThinItalic.ttf"),
+    PoppinsSemiBold: require("./assets/fonts/Poppins-SemiBold.ttf"),
+    PoppinsMedium: require("./assets/fonts/Poppins-Medium.ttf"),
   });
 
   if (!fontsLoaded) {
@@ -60,6 +68,12 @@ export default function App() {
 
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Verification" component={Verification} />
+
+        <Stack.Screen name="ResetPassword" component={ResetPassword} />
+        <Stack.Screen name="CreateNewPassword" component={CreateNewPassword} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Search" component={Search} />
       </Stack.Navigator>
 
       <StatusBar style="auto" />
