@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat-SemiBold",
     fontSize: 12,
     letterSpacing: 0.12,
-    backgroundColor: "#25283652",
+    backgroundColor: "#252836A6",
   },
 
   info: {

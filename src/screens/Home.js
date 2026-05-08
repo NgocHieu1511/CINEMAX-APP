@@ -41,21 +41,21 @@ const movies = [
 const banners = [
   {
     id: "1",
-    title: "Black Panther: Wakanda Forever",
-    date: "On March 2, 2022",
-    image: require("../../assets/img/banner1.png"),
+    title: "",
+    date: "",
+    image: require("../../assets/img/banner3.jpg"),
   },
   {
     id: "2",
-    title: "Avatar: The Way of Water",
+    title: "Black Panther: Wakanda Forever",
     date: "On Dec 16, 2022",
-    image: require("../../assets/img/banner2.png"),
+    image: require("../../assets/img/banner1.1.png"),
   },
   {
     id: "3",
-    title: "Doctor Strange 2",
-    date: "On May 6, 2022",
-    image: require("../../assets/img/banner3.png"),
+    title: "",
+    date: "",
+    image: require("../../assets/img/banner1.jpg"),
   },
 ];
 
@@ -98,23 +98,17 @@ export default function Home() {
         </View>
 
         {/* Banner */}
-        <FlatList
-          data={banners}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item.id}
-          onScroll={(e) => {
-            const index = Math.round(
-              e.nativeEvent.contentOffset.x /
-                e.nativeEvent.layoutMeasurement.width,
-            );
-            setActiveIndex(index);
-          }}
-          renderItem={({ item }) => (
-            <Banner image={item.image} title={item.title} date={item.date} />
-          )}
-        />
+        <View style={{ marginTop: 24 }}>
+          <FlatList
+            data={banners}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <Banner image={item.image} title={item.title} date={item.date} />
+            )}
+          />
+        </View>
 
         {/* Dots */}
         <View style={styles.dots}>
@@ -236,51 +230,23 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
 
-  banner: {
-    marginTop: 20,
-    borderRadius: 16,
-    overflow: "hidden",
-  },
-
-  bannerImg: {
-    width: "100%",
-    height: 180,
-  },
-
-  bannerText: {
-    position: "absolute",
-    bottom: 10,
-    left: 10,
-  },
-
-  bannerTitle: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "700",
-  },
-
-  bannerDate: {
-    color: "#ccc",
-    fontSize: 12,
-  },
-
   dots: {
     flexDirection: "row",
     justifyContent: "center",
-    marginVertical: 10,
+    marginVertical: 12,
   },
 
   dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: "#555",
-    marginHorizontal: 3,
+    width: 8,
+    height: 8,
+    borderRadius: 8,
+    backgroundColor: "#19545F",
+    marginHorizontal: 4,
   },
 
   activeDot: {
     backgroundColor: "#12CDD9",
-    width: 16,
+    width: 24,
   },
 
   sectionTitle: {
@@ -309,14 +275,13 @@ const styles = StyleSheet.create({
     color: "#12CDD9",
     fontFamily: "Montserrat-Medium",
     fontSize: 12,
-    letterSpacing: 0.12,
   },
 
   category: {
     color: "#EBEBEF",
     fontFamily: "Montserrat-Medium",
     fontSize: 12,
-    letterSpacing: 0.12,
+
     marginRight: 15,
   },
 
@@ -330,7 +295,7 @@ const styles = StyleSheet.create({
     color: "#12CDD9",
     fontFamily: "Montserrat-Medium",
     fontSize: 14,
-    letterSpacing: 0.12,
+    marginTop: 15,
   },
 
   bottomNav: {
