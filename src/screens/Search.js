@@ -57,8 +57,8 @@ const recommend = [
   {
     id: "1",
     title: "The Jungle Waiting",
-    category: "Adventure", // ✅ thêm
-    rating: "4.8", // ✅ thêm
+    category: "Adventure",
+    rating: "4.8",
     image: require("../../assets/img/jungle-poster.png"),
   },
   {

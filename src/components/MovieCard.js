@@ -1,10 +1,10 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function MovieCard({ image, title, category, rating }) {
+export default function MovieCard({ image, title, category, rating, onPress }) {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity onPress={onPress} style={styles.card}>
       {/* Image */}
       <View style={styles.imageWrapper}>
         <Image source={image} style={styles.image} />
@@ -23,7 +23,7 @@ export default function MovieCard({ image, title, category, rating }) {
         </Text>
         <Text style={styles.category}>{category}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({

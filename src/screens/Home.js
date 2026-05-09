@@ -14,6 +14,7 @@ import BottomTabs from "../navigation/BottomTabs";
 import MovieCard from "../components/MovieCard";
 import Banner from "../components/Banner";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const movies = [
   {
@@ -61,6 +62,7 @@ const banners = [
 
 export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -79,7 +81,10 @@ export default function Home() {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.heartBtn}>
+          <TouchableOpacity
+            style={styles.heartBtn}
+            onPress={() => navigation.navigate("Wishlist")}
+          >
             <Ionicons name="heart" size={24} color="#FB4141" />
           </TouchableOpacity>
         </View>
@@ -147,9 +152,19 @@ export default function Home() {
               title={item.title}
               category={item.category}
               rating={item.rating}
+              onPress={() => navigation.navigate("MovieDetail")}
             />
           )}
         />
+        {/* Upcoming Movies */}
+        <View style={styles.rowBetween}>
+          <Text style={styles.sectionTitle}>Upcoming Movies</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("UpcomingMovies")}
+          >
+            <Text style={styles.seeAll}>See All</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
 
       <BottomTabs />
