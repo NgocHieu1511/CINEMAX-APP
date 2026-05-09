@@ -5,9 +5,6 @@ export default function Banner({ image, title, date }) {
   return (
     <View style={styles.banner}>
       <ImageBackground source={image} style={styles.bannerImg}>
-        {/* Overlay */}
-        <View style={styles.overlay} />
-
         {/* Text */}
         <View style={styles.bannerText}>
           <Text style={styles.bannerTitle}>{title}</Text>
@@ -28,13 +25,8 @@ const styles = StyleSheet.create({
 
   bannerImg: {
     width: "100%",
-    height: 180,
+    height: 154,
     justifyContent: "flex-end",
-  },
-
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.5)",
   },
 
   bannerText: {
@@ -42,14 +34,16 @@ const styles = StyleSheet.create({
   },
 
   bannerTitle: {
-    color: "#fff",
+    color: "#FFF",
+    fontFamily: "MontserratSemiBold", // ✅ font-weight: 600
     fontSize: 16,
-    fontWeight: "700",
   },
 
   bannerDate: {
-    color: "#ccc",
+    color: "#EBEBEF",
+    fontFamily: "MontserratMedium", // ✅ font-weight: 500
     fontSize: 12,
+
     marginTop: 4,
   },
 });

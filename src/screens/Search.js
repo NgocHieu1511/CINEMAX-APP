@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
+
 import { Ionicons } from "@expo/vector-icons";
 import BottomTabs from "../navigation/BottomTabs";
 import MovieCard from "../components/MovieCard";
@@ -19,8 +20,36 @@ const data = [
     title: "Spider-Man No Way Home",
     year: "2021",
     duration: "148 Minutes",
-    type: "Action | Movie",
     image: require("../../assets/img/spider-man-poster.png"),
+    badge: "Premium",
+    badgeColor: "#FF8700",
+  },
+  {
+    id: "2",
+    title: "Riverdale",
+    year: "2021",
+    duration: "148 Minutes",
+    image: require("../../assets/img/spider-man-poster.png"),
+    badge: "Free",
+    badgeColor: "#12CDD9",
+  },
+  {
+    id: "3",
+    title: "Life of PI",
+    year: "2021",
+    duration: "148 Minutes",
+    image: require("../../assets/img/life-poster.png"),
+    badge: "Premium",
+    badgeColor: "#FF8700",
+  },
+  {
+    id: "4",
+    title: "The Jungle Waiting",
+    year: "2021",
+    duration: "148 Minutes",
+    image: require("../../assets/img/jungle-poster.png"),
+    badge: "Premium",
+    badgeColor: "#FF8700",
   },
 ];
 
@@ -28,8 +57,8 @@ const recommend = [
   {
     id: "1",
     title: "The Jungle Waiting",
-    category: "Adventure", // ✅ thêm
-    rating: "4.8", // ✅ thêm
+    category: "Adventure",
+    rating: "4.8",
     image: require("../../assets/img/jungle-poster.png"),
   },
   {
@@ -49,6 +78,7 @@ const recommend = [
 ];
 
 export default function Search() {
+  const [search, setSearch] = useState("");
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -75,44 +105,52 @@ export default function Search() {
         {/* TODAY */}
         <Text style={styles.sectionTitle}>Today</Text>
 
-        {data.map((item) => (
-          <View key={item.id} style={styles.cardRow}>
-            <Image source={item.image} style={styles.poster} />
+        <View style={styles.cardRow}>
+          <View>
+            <Image
+              source={require("../../assets/img/spider-man-poster.png")}
+              style={styles.poster}
+            />
 
-            <View style={styles.info}>
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>Premium</Text>
-              </View>
+            {/* RATING */}
+            <View style={styles.ratingBadge}>
+              <Ionicons name="star" size={14} color="#FF8700" />
 
-              <Text style={styles.title} numberOfLines={1}>
-                {item.title}
-              </Text>
-
-              <Text style={styles.meta}>
-                <Image
-                  source={require("../../assets/icons/calendar-icon.png")}
-                />{" "}
-                {item.year}
-              </Text>
-              <View style={styles.row}>
-                <Text style={styles.meta}>
-                  <Image
-                    source={require("../../assets/icons/clock-icon.png")}
-                  />{" "}
-                  {item.duration}
-                </Text>
-                <View style={styles.pg}>
-                  <Text style={styles.pgText}>PG-13</Text>
-                </View>
-              </View>
-
-              <Text style={styles.meta}>
-                <Image source={require("../../assets/icons/film-icon.png")} />{" "}
-                Action | <Text style={styles.type}>Movie</Text>
-              </Text>
+              <Text style={styles.ratingText}>4.5</Text>
             </View>
           </View>
-        ))}
+
+          <View style={styles.info}>
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>Premium</Text>
+            </View>
+
+            <Text style={styles.title} numberOfLines={1}>
+              Spider-Man No Way Home
+            </Text>
+
+            <Text style={styles.meta}>
+              <Image source={require("../../assets/icons/calendar-icon.png")} />{" "}
+              2021
+            </Text>
+
+            <View style={styles.row}>
+              <Text style={styles.meta}>
+                <Image source={require("../../assets/icons/clock-icon.png")} />{" "}
+                148 Minutes
+              </Text>
+
+              <View style={styles.pg}>
+                <Text style={styles.pgText}>PG-13</Text>
+              </View>
+            </View>
+
+            <Text style={styles.meta}>
+              <Image source={require("../../assets/icons/film-icon.png")} />{" "}
+              Action | <Text style={styles.type}>Movie</Text>
+            </Text>
+          </View>
+        </View>
 
         {/* RECOMMEND */}
         <View style={styles.rowBetween}>
@@ -205,9 +243,28 @@ const styles = StyleSheet.create({
   },
 
   poster: {
-    width: 100,
-    height: 140,
-    borderRadius: 12,
+    width: 120,
+    height: 170,
+    borderRadius: 16,
+  },
+  ratingBadge: {
+    position: "absolute",
+    top: 8,
+    left: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#252836A6",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+
+  ratingText: {
+    color: "#FF8700",
+    fontFamily: "MontserratSemiBold", // font-weight: 600
+    fontSize: 12,
+
+    marginLeft: 4,
   },
 
   info: {
