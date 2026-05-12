@@ -97,7 +97,7 @@ export default function Home() {
             placeholderTextColor="#999"
             style={styles.input}
           />
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Genre")}>
             <Image source={require("../../assets/icons/filter-icon.png")} />
           </TouchableOpacity>
         </View>

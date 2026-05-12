@@ -16,7 +16,7 @@ const { width, height } = Dimensions.get("window");
 export default function Onboarding1() {
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar barStyle="light-content" />
 
       {/* Top Section */}
@@ -49,49 +49,49 @@ export default function Onboarding1() {
             style={styles.nextButton}
             onPress={() => navigation.navigate("Onboarding2")}
           >
-            <Image
-              source={require("../../assets/icons/Next1-icon.png")}
-              style={styles.arrow}
-            />
+            <Image source={require("../../assets/icons/Next1-icon.png")} />
           </TouchableOpacity>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1F1D2B",
+    backgroundColor: "#171725",
+    paddingTop: 60,
   },
 
   topSection: {
     width: "100%",
-    paddingTop: 0,
   },
 
   image: {
-    width: width, // full ngang màn hình
-    height: 420,
-    resizeMode: "cover", // hoặc contain nếu muốn giữ nguyên tỷ lệ
+    width: "100%", // full ngang màn hình
+
+    resizeMode: "cover",
+    // hoặc contain nếu muốn giữ nguyên tỷ lệ
   },
 
   bottomSection: {
     flex: 1,
-    paddingHorizontal: 55,
+    paddingHorizontal: 24,
     paddingBottom: 30,
+    backgroundColor: "#1F1D2B",
   },
 
   title: {
-    color: "white",
-    fontSize: 17,
-    fontWeight: 600,
+    color: "#FFF",
     textAlign: "center",
 
     fontFamily: "MontserratSemiBold",
-    letterSpacing: 0.12,
+    fontSize: 18,
+    fontWeight: "600",
+
     lineHeight: 28.8,
+
     marginTop: 40,
   },
 
@@ -101,9 +101,9 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     marginBottom: 30,
     fontFamily: "MontserratMedium",
-    letterSpacing: 0.12,
+
     fontSize: 14,
-    marginTop: 14,
+    marginTop: 10,
   },
 
   footer: {

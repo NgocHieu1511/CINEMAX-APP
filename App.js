@@ -17,6 +17,7 @@ import Download from "./src/screens/Download";
 import WishList from "./src/screens/WishList";
 import MovieDetail from "./src/screens/MovieDetail";
 import UpcommingMovie from "./src/screens/UpcommingMovie";
+import Genre from "./src/screens/Genre";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -82,6 +83,7 @@ export default function App() {
         <Stack.Screen name="Wishlist" component={WishList} />
         <Stack.Screen name="MovieDetail" component={MovieDetail} />
         <Stack.Screen name="UpcomingMovies" component={UpcommingMovie} />
+        <Stack.Screen name="Genre" component={Genre} />
       </Stack.Navigator>
 
       <StatusBar style="auto" />
