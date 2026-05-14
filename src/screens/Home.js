@@ -9,7 +9,7 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-import { Ionicons, Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import BottomTabs from "../navigation/BottomTabs";
 import MovieCard from "../components/MovieCard";
 import Banner from "../components/Banner";
@@ -23,22 +23,26 @@ const movies = [
     image: require("../../assets/img/spider-man-poster.png"),
     rating: 4.5,
     category: "Action",
+    type: "movie",
   },
   {
     id: "2",
     title: "Life of Pi",
-    image: require("../../assets/img/spider-man-poster.png"),
+    image: require("../../assets/img/life-poster.png"),
     rating: 4.5,
     category: "Action",
+    type: "movie",
   },
   {
     id: "3",
     title: "Riverdale",
-    image: require("../../assets/img/spider-man-poster.png"),
+    image: require("../../assets/img/riverdale-poster.png"),
     rating: 4.2,
     category: "Action",
+    type: "serial",
   },
 ];
+
 const banners = [
   {
     id: "1",
@@ -63,6 +67,7 @@ const banners = [
 export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
   const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -76,7 +81,7 @@ export default function Home() {
             <View>
               <Text style={styles.hello}>Hello, Smith</Text>
               <Text style={styles.subText}>
-                Let’s stream your favorite movie
+                Let's stream your favorite movie
               </Text>
             </View>
           </View>
@@ -138,24 +143,37 @@ export default function Home() {
         {/* Popular */}
         <View style={styles.rowBetween}>
           <Text style={styles.sectionTitle}>Most popular</Text>
-          <Text style={styles.seeAll}>See All</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("MostPopularMovie")}
+          >
+            <Text style={styles.seeAll}>See All</Text>
+          </TouchableOpacity>
         </View>
 
+        {/* Movies FlatList - full width, no right padding */}
         <FlatList
           data={movies}
           horizontal
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => item.id}
+          style={styles.movieList}
+          contentContainerStyle={styles.movieListContent}
+          ItemSeparatorComponent={() => <View style={{ width: 12 }} />}
           renderItem={({ item }) => (
             <MovieCard
               image={item.image}
               title={item.title}
               category={item.category}
               rating={item.rating}
-              onPress={() => navigation.navigate("MovieDetail")}
+              onPress={() =>
+                navigation.navigate(
+                  item.type === "serial" ? "SerialDetail" : "MovieDetail",
+                )
+              }
             />
           )}
         />
+
         {/* Upcoming Movies */}
         <View style={styles.rowBetween}>
           <Text style={styles.sectionTitle}>Upcoming Movies</Text>
@@ -171,18 +189,20 @@ export default function Home() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1F1D2B",
     paddingTop: 50,
-    paddingHorizontal: 16,
   },
 
+  /* HEADER */
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingHorizontal: 16,
   },
 
   profileRow: {
@@ -199,7 +219,7 @@ const styles = StyleSheet.create({
 
   hello: {
     color: "#FFFFFF",
-    fontFamily: "Montserrat-SemiBold", // nên dùng đúng file font
+    fontFamily: "Montserrat-SemiBold",
     fontSize: 16,
     letterSpacing: 0.12,
     lineHeight: 22,
@@ -214,13 +234,13 @@ const styles = StyleSheet.create({
   },
 
   heartBtn: {
-    backgroundColor: "#2A2A3D",
     padding: 4,
     borderRadius: 12,
     backgroundColor: "#252836",
     opacity: 0.8,
   },
 
+  /* SEARCH */
   searchBox: {
     flexDirection: "row",
     alignItems: "center",
@@ -229,11 +249,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     marginTop: 33,
+    marginHorizontal: 16,
   },
 
   input: {
     flex: 1,
-
     marginHorizontal: 10,
     borderRightWidth: 1,
     borderRightColor: "grey",
@@ -245,6 +265,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
 
+  /* DOTS */
   dots: {
     flexDirection: "row",
     justifyContent: "center",
@@ -264,18 +285,22 @@ const styles = StyleSheet.create({
     width: 24,
   },
 
+  /* SECTION TITLE */
   sectionTitle: {
     color: "#FFFFFF",
     fontFamily: "Montserrat-SemiBold",
     fontSize: 16,
     letterSpacing: 0.12,
     marginTop: 20,
+    paddingHorizontal: 16,
   },
 
+  /* CATEGORIES */
   categories: {
     flexDirection: "row",
     marginTop: 15,
     alignItems: "center",
+    paddingHorizontal: 16,
   },
 
   activeCategory: {
@@ -296,14 +321,15 @@ const styles = StyleSheet.create({
     color: "#EBEBEF",
     fontFamily: "Montserrat-Medium",
     fontSize: 12,
-
     marginRight: 15,
   },
 
+  /* ROW BETWEEN */
   rowBetween: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingHorizontal: 16,
   },
 
   seeAll: {
@@ -313,12 +339,12 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
 
-  bottomNav: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    paddingVertical: 12,
-    backgroundColor: "#1F1D2B",
-    borderTopWidth: 0.5,
-    borderTopColor: "#333",
+  /* MOVIE LIST */
+  movieList: {
+    marginTop: 4,
+  },
+
+  movieListContent: {
+    paddingLeft: 16,
   },
 });

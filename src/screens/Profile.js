@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,154 +7,314 @@ import {
   TouchableOpacity,
   ScrollView,
   StatusBar,
+  Modal,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import BottomTabs from "../navigation/BottomTabs";
+import { useNavigation } from "@react-navigation/native";
+
+const MenuItem = ({ icon, title }) => {
+  return (
+    <TouchableOpacity style={styles.item}>
+      <View style={styles.itemLeft}>
+        <View style={styles.iconBox}>{icon}</View>
+        <Text style={styles.itemText}>{title}</Text>
+      </View>
+      <Ionicons name="chevron-forward" size={24} color="#12CDD9" />
+    </TouchableOpacity>
+  );
+};
 
 export default function Profile() {
+  const navigation = useNavigation();
+  const [logoutVisible, setLogoutVisible] = useState(false);
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 120 }}
+      >
         {/* HEADER */}
         <Text style={styles.header}>Profile</Text>
 
         {/* USER INFO */}
         <View style={styles.userRow}>
           <Image
-            source={require("../../assets/img/avatar.png")}
+            source={require("../../assets/icons/avatar-profile.png")}
             style={styles.avatar}
           />
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>Tiffany</Text>
             <Text style={styles.email}>Tiffanyjersey@gmail.com</Text>
           </View>
-          <Ionicons name="create-outline" size={18} color="#12CDD9" />
+          <TouchableOpacity
+            style={styles.editBtn}
+            onPress={() => navigation.navigate("EditProfile")}
+          >
+            <Image source={require("../../assets/icons/edit-icon.png")} />
+          </TouchableOpacity>
         </View>
 
         {/* PREMIUM CARD */}
-        <View style={styles.premiumCard}>
-          <Text style={styles.premiumTitle}>Premium Member</Text>
-          <Text style={styles.premiumDesc}>
-            New movies are coming for you, Download Now!
-          </Text>
-        </View>
+        <TouchableOpacity
+          style={styles.premiumCard}
+          onPress={() => navigation.navigate("PremiumAccount")}
+        >
+          <View style={styles.premiumIcon}>
+            <Image source={require("../../assets/icons/premium-icon.png")} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.premiumTitle}>Premium Member</Text>
+            <Text style={styles.premiumDesc}>
+              New movies are coming for you,
+            </Text>
+            <Text style={styles.premiumDesc}>Download Now!</Text>
+          </View>
+        </TouchableOpacity>
 
         {/* ACCOUNT */}
-        <Text style={styles.section}>Account</Text>
         <View style={styles.card}>
-          <Item icon="person-outline" title="Member" />
-          <Item icon="lock-closed-outline" title="Change Password" />
+          <Text style={styles.section}>Account</Text>
+          <MenuItem
+            title="Member"
+            icon={
+              <Image source={require("../../assets/icons/account-icon.png")} />
+            }
+          />
+          <View style={styles.divider} />
+          <MenuItem
+            title="Change Password"
+            icon={
+              <Image source={require("../../assets/icons/lock-icon.png")} />
+            }
+          />
         </View>
 
         {/* GENERAL */}
-        <Text style={styles.section}>General</Text>
         <View style={styles.card}>
-          <Item icon="notifications-outline" title="Notification" />
-          <Item icon="globe-outline" title="Language" />
-          <Item icon="location-outline" title="Country" />
-          <Item icon="trash-outline" title="Clear Cache" />
+          <Text style={styles.section}>General</Text>
+          <MenuItem
+            title="Notification"
+            icon={
+              <Image
+                source={require("../../assets/icons/notification-icon.png")}
+              />
+            }
+          />
+          <View style={styles.divider} />
+          <MenuItem
+            title="Language"
+            icon={
+              <Image source={require("../../assets/icons/language-icon.png")} />
+            }
+          />
+          <View style={styles.divider} />
+          <MenuItem
+            title="Country"
+            icon={
+              <Image source={require("../../assets/icons/country-icon.png")} />
+            }
+          />
+          <View style={styles.divider} />
+          <MenuItem
+            title="Clear Cache"
+            icon={<Image source={require("../../assets/icons/bin-icon.png")} />}
+          />
         </View>
 
         {/* MORE */}
-        <Text style={styles.section}>More</Text>
         <View style={styles.card}>
-          <Item icon="document-text-outline" title="Legal and Policies" />
-          <Item icon="help-circle-outline" title="Help & Feedback" />
-          <Item icon="information-circle-outline" title="About Us" />
+          <Text style={styles.section}>More</Text>
+          <MenuItem
+            title="Legal and Policies"
+            icon={
+              <Image source={require("../../assets/icons/legal-icon.png")} />
+            }
+          />
+          <View style={styles.divider} />
+          <MenuItem
+            title="Help & Feedback"
+            icon={
+              <Image source={require("../../assets/icons/help-icon.png")} />
+            }
+          />
+          <View style={styles.divider} />
+          <MenuItem
+            title="About Us"
+            icon={
+              <Image source={require("../../assets/icons/about-icon.png")} />
+            }
+          />
         </View>
 
         {/* LOGOUT */}
-        <TouchableOpacity style={styles.logout}>
+        <TouchableOpacity
+          style={styles.logout}
+          onPress={() => setLogoutVisible(true)}
+        >
           <Text style={styles.logoutText}>Log Out</Text>
         </TouchableOpacity>
       </ScrollView>
+
+      {/* LOGOUT MODAL */}
+      <Modal visible={logoutVisible} transparent animationType="fade">
+        <View style={styles.modalOverlay}>
+          <View style={styles.logoutModal}>
+            {/* ICON */}
+            <View style={styles.iconOuter}>
+              <View style={styles.iconInner}>
+                <Image
+                  source={require("../../assets/icons/question-icon.png")}
+                />
+              </View>
+            </View>
+
+            <Text style={styles.modalTitle}>Are you sure ?</Text>
+
+            <Text style={styles.modalDesc}>
+              Ullamcorper imperdiet urna id non sed est sem. Rhoncus amet, enim
+              purus gravida donec aliquet.
+            </Text>
+
+            <View style={styles.modalBtns}>
+              <TouchableOpacity
+                style={styles.modalBtnOutline}
+                onPress={() => {
+                  setLogoutVisible(false);
+                  navigation.navigate("Login");
+                }}
+              >
+                <Text style={styles.modalBtnOutlineText}>Log Out</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.modalBtnFill}
+                onPress={() => setLogoutVisible(false)}
+              >
+                <Text style={styles.modalBtnFillText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       <BottomTabs />
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1F1D2B",
-    paddingTop: 50,
-    paddingHorizontal: 20,
+    paddingTop: 52,
+    paddingHorizontal: 24,
   },
 
   header: {
     color: "#FFF",
+    textAlign: "center",
     fontFamily: "MontserratSemiBold",
     fontSize: 16,
-    textAlign: "center",
+    fontWeight: "600",
   },
 
   userRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 24,
   },
 
   avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 12,
+    width: 54,
+    height: 54,
+    borderRadius: 27,
+    marginRight: 16,
   },
 
   name: {
     color: "#FFF",
     fontFamily: "MontserratSemiBold",
-    fontSize: 14,
+    fontSize: 16,
+    fontWeight: "600",
   },
 
   email: {
-    color: "#92929D",
+    color: "#B1B1B1",
     fontFamily: "MontserratMedium",
-    fontSize: 12,
+    fontSize: 14,
+    fontWeight: "500",
+    marginTop: 8,
+  },
+
+  editBtn: {
+    width: 24,
+    height: 24,
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   premiumCard: {
-    backgroundColor: "#FF8700",
     borderRadius: 16,
-    padding: 16,
-    marginTop: 20,
+    backgroundColor: "#FF8700",
+    padding: 24,
+    marginTop: 24,
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+
+  premiumIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 8,
+    marginTop: 2,
   },
 
   premiumTitle: {
     color: "#FFF",
     fontFamily: "MontserratSemiBold",
-    fontSize: 14,
+    fontSize: 16,
+    fontWeight: "600",
   },
 
   premiumDesc: {
     color: "#FFF",
-    fontFamily: "MontserratMedium",
-    fontSize: 12,
-    marginTop: 4,
+    fontFamily: "MontserratRegular",
+    fontSize: 14,
+    fontWeight: "400",
+    lineHeight: 22.4,
+    marginTop: 2,
   },
 
   section: {
-    color: "#92929D",
-    fontFamily: "MontserratMedium",
-    fontSize: 12,
-    marginTop: 24,
+    color: "#FFF",
+    fontFamily: "MontserratSemiBold",
+    fontSize: 18,
+    fontWeight: "600",
+    marginTop: 23,
+    marginBottom: 24,
   },
 
   card: {
-    backgroundColor: "#252836",
+    backgroundColor: "#1F1D2B",
     borderRadius: 16,
-    paddingVertical: 8,
-    marginTop: 10,
+    overflow: "hidden",
+    paddingHorizontal: 18,
   },
 
   item: {
+    height: 58,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 14,
   },
 
   itemLeft: {
@@ -162,26 +322,155 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  iconBox: {
+    width: 28,
+    height: 28,
+    borderRadius: 16,
+    paddingHorizontal: 2,
+    paddingVertical: 2,
+    backgroundColor: "rgba(255,255,255,0.04)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
   itemText: {
     color: "#FFF",
     fontFamily: "MontserratMedium",
-    fontSize: 12,
-    marginLeft: 10,
+    fontSize: 14,
+    marginLeft: 16,
+  },
+
+  divider: {
+    height: 1,
+    backgroundColor: "rgba(255,255,255,0.04)",
+    marginLeft: 56,
   },
 
   logout: {
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: "#12CDD9",
-    borderRadius: 24,
-    paddingVertical: 12,
+    borderRadius: 30,
+    height: 54,
+    justifyContent: "center",
     alignItems: "center",
-    marginTop: 30,
-    marginBottom: 80,
+    marginTop: 36,
   },
 
   logoutText: {
     color: "#12CDD9",
+    fontFamily: "MontserratSemiBold",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+
+  /* MODAL */
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.92)",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 32,
+  },
+
+  logoutModal: {
+    backgroundColor: "#252836",
+    borderRadius: 20,
+    paddingVertical: 36,
+    paddingHorizontal: 24,
+    alignItems: "center",
+    width: "100%",
+  },
+
+  iconOuter: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: "#FF8700",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 24,
+    position: "relative",
+  },
+
+  iconInner: {
+    width: 62,
+    height: 62,
+    borderRadius: 31,
+    backgroundColor: "#12CDD9",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  questionMark: {
+    color: "#FFF",
+    fontSize: 28,
+    fontFamily: "MontserratBold",
+    fontWeight: "700",
+  },
+
+  dot: {
+    position: "absolute",
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#12CDD9",
+  },
+
+  modalTitle: {
+    color: "#FFF",
+    fontFamily: "MontserratSemiBold",
+    fontSize: 18,
+    fontWeight: "600",
+    textAlign: "center",
+    letterSpacing: 0.12,
+  },
+
+  modalDesc: {
+    color: "#92929D",
     fontFamily: "MontserratMedium",
+    fontSize: 12,
+    textAlign: "center",
+    lineHeight: 18,
+    marginTop: 12,
+    letterSpacing: 0.12,
+  },
+
+  modalBtns: {
+    flexDirection: "row",
+    marginTop: 24,
+    gap: 12,
+  },
+
+  modalBtnOutline: {
+    flex: 1,
+    height: 48,
+    borderRadius: 30,
+    borderWidth: 1.5,
+    borderColor: "#12CDD9",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  modalBtnOutlineText: {
+    color: "#12CDD9",
+    fontFamily: "MontserratSemiBold",
     fontSize: 14,
+    fontWeight: "600",
+  },
+
+  modalBtnFill: {
+    flex: 1,
+    height: 48,
+    borderRadius: 30,
+    backgroundColor: "#12CDD9",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  modalBtnFillText: {
+    color: "#FFF",
+    fontFamily: "MontserratSemiBold",
+    fontSize: 14,
+    fontWeight: "600",
   },
 });

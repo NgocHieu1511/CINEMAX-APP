@@ -15,6 +15,8 @@ import profileIcon from "../../assets/icons/account-icon.png";
 import profileActiveIcon from "../../assets/icons/account-active.png";
 
 export default function BottomTabs() {
+  const homeScreens = ["MovieDetail", "Trailer", "UpcomingMovie"];
+  const profileScreens = ["EditProfile"];
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -48,7 +50,10 @@ export default function BottomTabs() {
   return (
     <View style={styles.container}>
       {tabs.map((tab, index) => {
-        const isActive = route.name === tab.screen;
+        const isActive =
+          route.name === tab.screen ||
+          (tab.screen === "Home" && homeScreens.includes(route.name)) ||
+          (tab.screen === "Profile" && profileScreens.includes(route.name));
 
         return (
           <TouchableOpacity

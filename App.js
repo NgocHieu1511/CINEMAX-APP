@@ -16,11 +16,19 @@ import Search from "./src/screens/Search";
 import Download from "./src/screens/Download";
 import WishList from "./src/screens/WishList";
 import MovieDetail from "./src/screens/MovieDetail";
-import UpcommingMovie from "./src/screens/UpcommingMovie";
+import UpcomingMovie from "./src/screens/UpcomingMovie";
 import Genre from "./src/screens/Genre";
+import Profile from "./src/screens/Profile";
+import MostPopularMovie from "./src/screens/MostPopularMovie";
+import Trailer from "./src/screens/Trailer";
+import SerialDetail from "./src/screens/SerialDetail";
+import EditProfile from "./src/screens/EditProfile";
+import PremiumAccount from "./src/screens/PremiumAccount";
+import PaymentMethod from "./src/screens/PaymentMethod";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { DownloadProvider } from "./src/context/DownloadContext";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -61,33 +69,45 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Onboarding1" component={Onboarding1} />
+    <DownloadProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Splash" component={SplashScreen} />
+          <Stack.Screen name="Onboarding1" component={Onboarding1} />
 
-        <Stack.Screen name="Onboarding2" component={Onboarding2} />
-        <Stack.Screen name="Onboarding3" component={Onboarding3} />
+          <Stack.Screen name="Onboarding2" component={Onboarding2} />
+          <Stack.Screen name="Onboarding3" component={Onboarding3} />
 
-        <Stack.Screen name="LoginSignUp" component={LoginSignUp} />
+          <Stack.Screen name="LoginSignUp" component={LoginSignUp} />
 
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="Verification" component={Verification} />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="Verification" component={Verification} />
 
-        <Stack.Screen name="ResetPassword" component={ResetPassword} />
-        <Stack.Screen name="CreateNewPassword" component={CreateNewPassword} />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Search" component={Search} />
-        <Stack.Screen name="Download" component={Download} />
-        <Stack.Screen name="Wishlist" component={WishList} />
-        <Stack.Screen name="MovieDetail" component={MovieDetail} />
-        <Stack.Screen name="UpcomingMovies" component={UpcommingMovie} />
-        <Stack.Screen name="Genre" component={Genre} />
-      </Stack.Navigator>
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
+          <Stack.Screen
+            name="CreateNewPassword"
+            component={CreateNewPassword}
+          />
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Search" component={Search} />
+          <Stack.Screen name="Download" component={Download} />
+          <Stack.Screen name="Wishlist" component={WishList} />
+          <Stack.Screen name="MovieDetail" component={MovieDetail} />
+          <Stack.Screen name="UpcomingMovies" component={UpcomingMovie} />
+          <Stack.Screen name="Genre" component={Genre} />
+          <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="MostPopularMovie" component={MostPopularMovie} />
+          <Stack.Screen name="Trailer" component={Trailer} />
+          <Stack.Screen name="SerialDetail" component={SerialDetail} />
+          <Stack.Screen name="EditProfile" component={EditProfile} />
+          <Stack.Screen name="PremiumAccount" component={PremiumAccount} />
+          <Stack.Screen name="PaymentMethod" component={PaymentMethod} />
+        </Stack.Navigator>
 
-      <StatusBar style="auto" />
-    </NavigationContainer>
+        <StatusBar style="auto" />
+      </NavigationContainer>
+    </DownloadProvider>
   );
 }
 

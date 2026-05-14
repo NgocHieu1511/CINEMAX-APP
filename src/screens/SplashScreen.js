@@ -1,32 +1,32 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, Animated, Image } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-export default function SplashScreen({ navigation }) {
-  const fadeAnim = new Animated.Value(0);
+export default function SplashScreen() {
+  const navigation = useNavigation();
+  // useEffect(() => {
+  //   // chuyển màn sau 3s
+  //   const timer = setTimeout(() => {
+  //     navigation.replace("Onboarding1");
+  //   }, 3000);
 
-  useEffect(() => {
-    // animation fade in
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1500,
-      useNativeDriver: true,
-    }).start();
-
-    // chuyển màn sau 2s
-    const timer = setTimeout(() => {
-      navigation.replace("Onboarding1");
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   return (
-    <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
-      <Image
-        source={require("../../assets/img/logo.png")}
-        style={styles.logoBox}
-      ></Image>
-    </Animated.View>
+    <TouchableOpacity
+      onPress={() => navigation.replace("Onboarding1")}
+      style={styles.container}
+      activeOpacity={1}
+    >
+      <View>
+        <Image
+          source={require("../../assets/img/logo.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
+    </TouchableOpacity>
   );
 }
 

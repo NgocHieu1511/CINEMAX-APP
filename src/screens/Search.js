@@ -13,43 +13,79 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import BottomTabs from "../navigation/BottomTabs";
 import MovieCard from "../components/MovieCard";
+import { useNavigation } from "@react-navigation/native";
 
-const data = [
+const ALL_MOVIES = [
   {
     id: "1",
-    title: "Spider-Man No Way Home",
+    title: "Spider-Man No Way..",
     year: "2021",
     duration: "148 Minutes",
-    image: require("../../assets/img/spider-man-poster.png"),
+    rating: "4.5",
+    genre: "Action",
+    type: "Movie",
     badge: "Premium",
     badgeColor: "#FF8700",
+    image: require("../../assets/img/spider-man-poster.png"),
   },
   {
     id: "2",
     title: "Riverdale",
     year: "2021",
     duration: "148 Minutes",
-    image: require("../../assets/img/spider-man-poster.png"),
+    rating: "4.5",
+    genre: "Action",
+    type: "Series",
     badge: "Free",
     badgeColor: "#12CDD9",
+    image: require("../../assets/img/riverdale-poster.png"),
   },
   {
     id: "3",
     title: "Life of PI",
     year: "2021",
     duration: "148 Minutes",
-    image: require("../../assets/img/life-poster.png"),
+    rating: "4.5",
+    genre: "Action",
+    type: "Movie",
     badge: "Premium",
     badgeColor: "#FF8700",
+    image: require("../../assets/img/life-poster.png"),
   },
   {
     id: "4",
     title: "The Jungle Waiting",
     year: "2021",
     duration: "148 Minutes",
-    image: require("../../assets/img/jungle-poster.png"),
+    rating: "4.5",
+    genre: "Action",
+    type: "Movie",
     badge: "Premium",
     badgeColor: "#FF8700",
+    image: require("../../assets/img/jungle-poster.png"),
+  },
+];
+
+const ALL_ACTORS = [
+  {
+    id: "1",
+    name: "John Wilson",
+    avatar: require("../../assets/icons/actor-1.png"),
+  },
+  {
+    id: "2",
+    name: "John Deere",
+    avatar: require("../../assets/icons/actor-2.png"),
+  },
+  {
+    id: "3",
+    name: "John Cena",
+    avatar: require("../../assets/icons/actor-3.png"),
+  },
+  {
+    id: "4",
+    name: "John Stamo",
+    avatar: require("../../assets/icons/actor-4.png"),
   },
 ];
 
@@ -78,105 +114,274 @@ const recommend = [
 ];
 
 export default function Search() {
+  const navigation = useNavigation();
   const [search, setSearch] = useState("");
-  return (
-    <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* SEARCH INPUT */}
-        <View style={styles.searchBox}>
-          <Ionicons name="search" size={18} color="#999" />
-          <TextInput
-            placeholder="Type title, categories, years, etc"
-            placeholderTextColor="#999"
-            style={styles.input}
-          />
+  const [isFocused, setIsFocused] = useState(false);
+  const [selectedActor, setSelectedActor] = useState(null);
+
+  const isSearching = isFocused || search.length > 0;
+  const trimmed = search.trim().toLowerCase();
+
+  const filteredActors = trimmed
+    ? ALL_ACTORS.filter((a) => a.name.toLowerCase().includes(trimmed))
+    : [];
+
+  const filteredMovies = trimmed
+    ? ALL_MOVIES.filter((m) => m.title.toLowerCase().includes(trimmed))
+    : [];
+
+  const hasActors = filteredActors.length > 0;
+  const hasMovies = filteredMovies.length > 0;
+  const hasResults = hasActors || hasMovies;
+
+  const handleCancel = () => {
+    setSearch("");
+    setIsFocused(false);
+    setSelectedActor(null);
+  };
+
+  const renderMovieCard = (item) => (
+    <TouchableOpacity
+      key={item.id}
+      style={styles.movieCard}
+      activeOpacity={0.8}
+      onPress={() => navigation.navigate("MovieDetail", { movie: item })}
+    >
+      <View style={styles.posterWrapper}>
+        <Image source={item.image} style={styles.poster} />
+        <View style={styles.ratingBadge}>
+          <Ionicons name="star" size={10} color="#FF8700" />
+          <Text style={styles.ratingText}>{item.rating}</Text>
+        </View>
+      </View>
+
+      <View style={styles.movieInfo}>
+        <View style={[styles.badge, { backgroundColor: item.badgeColor }]}>
+          <Text style={styles.badgeText}>{item.badge}</Text>
         </View>
 
-        {/* CATEGORY */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={styles.categories}>
-            <Text style={styles.activeCategory}>All</Text>
-            <Text style={styles.category}>Comedy</Text>
-            <Text style={styles.category}>Animation</Text>
-            <Text style={styles.category}>Dokument</Text>
+        <Text style={styles.movieTitle} numberOfLines={1}>
+          {item.title}
+        </Text>
+
+        <View style={styles.metaRow}>
+          <Image source={require("../../assets/icons/calendar-icon.png")} />
+          <Text style={styles.metaText}>{item.year}</Text>
+        </View>
+
+        <View style={styles.metaRow}>
+          <Image source={require("../../assets/icons/clock-icon.png")} />
+          <Text style={styles.metaText}>{item.duration}</Text>
+          <View style={styles.pgBadge}>
+            <Text style={styles.pgText}>PG-13</Text>
           </View>
-        </ScrollView>
+        </View>
 
-        {/* TODAY */}
-        <Text style={styles.sectionTitle}>Today</Text>
+        <View style={styles.metaRow}>
+          <Image source={require("../../assets/icons/film-icon.png")} />
+          <Text style={styles.metaText}>{item.genre}</Text>
+          <View style={styles.separator} />
+          <Text style={[styles.metaText, styles.metaTypeBold]}>
+            {item.type}
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
 
-        <View style={styles.cardRow}>
-          <View>
-            <Image
-              source={require("../../assets/img/spider-man-poster.png")}
-              style={styles.poster}
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingBottom: 120 }}
+      >
+        {/* SEARCH ROW */}
+        <View style={styles.searchRow}>
+          <View style={styles.searchBox}>
+            <Ionicons name="search" size={18} color="#999" />
+            <TextInput
+              value={search}
+              onChangeText={setSearch}
+              onFocus={() => setIsFocused(true)}
+              placeholder="Type title, categories, years, etc"
+              placeholderTextColor="#999"
+              style={styles.input}
+              returnKeyType="search"
             />
-
-            {/* RATING */}
-            <View style={styles.ratingBadge}>
-              <Ionicons name="star" size={14} color="#FF8700" />
-
-              <Text style={styles.ratingText}>4.5</Text>
-            </View>
+            {search.length > 0 && (
+              <TouchableOpacity onPress={() => setSearch("")}>
+                <Ionicons name="close-circle" size={18} color="#92929D" />
+              </TouchableOpacity>
+            )}
           </View>
 
-          <View style={styles.info}>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>Premium</Text>
-            </View>
+          {isSearching && (
+            <TouchableOpacity onPress={handleCancel} style={styles.cancelBtn}>
+              <Text style={styles.cancelText}>Cancel</Text>
+            </TouchableOpacity>
+          )}
+        </View>
 
-            <Text style={styles.title} numberOfLines={1}>
-              Spider-Man No Way Home
-            </Text>
+        {/* ---- SEARCH RESULTS ---- */}
+        {trimmed.length > 0 ? (
+          <>
+            {hasResults ? (
+              <>
+                {/* ACTORS */}
+                {hasActors && (
+                  <>
+                    <Text style={styles.sectionTitle}>Actors</Text>
+                    <ScrollView
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      style={styles.actorScroll}
+                      contentContainerStyle={styles.actorScrollContent}
+                    >
+                      {filteredActors.map((actor) => (
+                        <TouchableOpacity
+                          key={actor.id}
+                          style={styles.actorItem}
+                          onPress={() => setSelectedActor(actor.id)}
+                        >
+                          <View
+                            style={[
+                              styles.actorAvatarWrapper,
+                              selectedActor === actor.id &&
+                                styles.actorAvatarSelected,
+                            ]}
+                          >
+                            <Image
+                              source={actor.avatar}
+                              style={styles.actorAvatar}
+                            />
+                          </View>
+                          <Text style={styles.actorName} numberOfLines={2}>
+                            {actor.name}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                  </>
+                )}
 
-            <Text style={styles.meta}>
-              <Image source={require("../../assets/icons/calendar-icon.png")} />{" "}
-              2021
-            </Text>
+                {/* MOVIE RELATED */}
+                <View style={styles.rowBetween}>
+                  <Text style={styles.sectionTitle}>Movie Related</Text>
+                  <TouchableOpacity>
+                    <Text style={styles.seeAll}>See All</Text>
+                  </TouchableOpacity>
+                </View>
 
-            <View style={styles.row}>
-              <Text style={styles.meta}>
-                <Image source={require("../../assets/icons/clock-icon.png")} />{" "}
-                148 Minutes
-              </Text>
+                <View style={styles.movieList}>
+                  {(hasMovies ? filteredMovies : ALL_MOVIES).map((item) =>
+                    renderMovieCard(item),
+                  )}
+                </View>
+              </>
+            ) : (
+              /* EMPTY STATE */
+              <View style={styles.emptyContainer}>
+                <Image
+                  source={require("../../assets/icons/no-icon.png")}
+                  style={styles.emptyIcon}
+                  resizeMode="contain"
+                />
+                <Text style={styles.emptyTitle}>
+                  We Are Sorry, We Can{"\n"}Not Find The Movie :(
+                </Text>
+                <Text style={styles.emptyDesc}>
+                  Find your movie by Type title,{"\n"}categories, years, etc
+                </Text>
+              </View>
+            )}
+          </>
+        ) : (
+          /* ---- DEFAULT STATE ---- */
+          <>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View style={styles.categories}>
+                <TouchableOpacity style={styles.activeCategoryBtn}>
+                  <Text style={styles.activeCategoryText}>All</Text>
+                </TouchableOpacity>
+                <Text style={styles.category}>Comedy</Text>
+                <Text style={styles.category}>Animation</Text>
+                <Text style={styles.category}>Dokument</Text>
+              </View>
+            </ScrollView>
 
-              <View style={styles.pg}>
-                <Text style={styles.pgText}>PG-13</Text>
+            <Text style={styles.sectionTitle}>Today</Text>
+            <View style={styles.movieCard}>
+              <View style={styles.posterWrapper}>
+                <Image
+                  source={require("../../assets/img/spider-man-poster.png")}
+                  style={styles.poster}
+                />
+                <View style={styles.ratingBadge}>
+                  <Ionicons name="star" size={10} color="#FF8700" />
+                  <Text style={styles.ratingText}>4.5</Text>
+                </View>
+              </View>
+              <View style={styles.movieInfo}>
+                <View style={[styles.badge, { backgroundColor: "#FF8700" }]}>
+                  <Text style={styles.badgeText}>Premium</Text>
+                </View>
+                <Text style={styles.movieTitle}>Spider-Man No Way Home</Text>
+                <View style={styles.metaRow}>
+                  <Image
+                    source={require("../../assets/icons/calendar-icon.png")}
+                  />
+                  <Text style={styles.metaText}>2021</Text>
+                </View>
+                <View style={styles.metaRow}>
+                  <Image
+                    source={require("../../assets/icons/clock-icon.png")}
+                  />
+                  <Text style={styles.metaText}>148 Minutes</Text>
+                  <View style={styles.pgBadge}>
+                    <Text style={styles.pgText}>PG-13</Text>
+                  </View>
+                </View>
+                <View style={styles.metaRow}>
+                  <Image source={require("../../assets/icons/film-icon.png")} />
+                  <Text style={styles.metaText}>Action</Text>
+                  <View style={styles.separator} />
+                  <Text style={[styles.metaText, styles.metaTypeBold]}>
+                    Movie
+                  </Text>
+                </View>
               </View>
             </View>
 
-            <Text style={styles.meta}>
-              <Image source={require("../../assets/icons/film-icon.png")} />{" "}
-              Action | <Text style={styles.type}>Movie</Text>
-            </Text>
-          </View>
-        </View>
+            <View style={styles.rowBetween}>
+              <Text style={styles.sectionTitle}>Recommend for you</Text>
+              <Text style={styles.seeAll}>See All</Text>
+            </View>
 
-        {/* RECOMMEND */}
-        <View style={styles.rowBetween}>
-          <Text style={styles.sectionTitle}>Recommend for you</Text>
-          <Text style={styles.seeAll}>See All</Text>
-        </View>
-
-        <FlatList
-          data={recommend}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <MovieCard
-              image={item.image}
-              title={item.title}
-              category={item.category}
-              rating={item.rating}
+            <FlatList
+              data={recommend}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item) => item.id}
+              ItemSeparatorComponent={() => <View style={{ width: 12 }} />}
+              renderItem={({ item }) => (
+                <MovieCard
+                  image={item.image}
+                  title={item.title}
+                  category={item.category}
+                  rating={item.rating}
+                />
+              )}
             />
-          )}
-        />
+          </>
+        )}
       </ScrollView>
+
       <BottomTabs />
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -185,7 +390,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
 
+  /* SEARCH */
+  searchRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+
   searchBox: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#252836",
@@ -197,171 +410,256 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     marginLeft: 10,
-    color: "#92929D",
+    color: "#FFF",
     fontFamily: "MontserratMedium",
     fontSize: 14,
     letterSpacing: 0.12,
   },
 
+  cancelBtn: {
+    paddingVertical: 8,
+  },
+
+  cancelText: {
+    color: "#12CDD9",
+    fontFamily: "MontserratSemiBold",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+
+  /* CATEGORIES */
   categories: {
     flexDirection: "row",
     marginTop: 24,
     alignItems: "center",
   },
 
-  activeCategory: {
+  activeCategoryBtn: {
     backgroundColor: "#2A2A3D",
     paddingVertical: 8,
     paddingHorizontal: 32,
     borderRadius: 12,
     marginRight: 10,
+  },
+
+  activeCategoryText: {
     color: "#12CDD9",
     fontFamily: "MontserratMedium",
     fontSize: 12,
-    letterSpacing: 0.12,
   },
 
   category: {
     color: "#EBEBEF",
     fontFamily: "MontserratMedium",
     fontSize: 12,
-    letterSpacing: 0.12,
     marginRight: 15,
   },
 
+  /* SECTION */
   sectionTitle: {
     color: "#FFFFFF",
     fontFamily: "MontserratSemiBold",
     fontSize: 16,
+    fontWeight: "600",
     letterSpacing: 0.12,
     marginTop: 24,
+    marginBottom: 4,
   },
 
-  cardRow: {
+  /* ACTORS */
+  actorScroll: {
+    marginTop: 12,
+  },
+
+  actorScrollContent: {
+    gap: 16,
+    paddingRight: 8,
+  },
+
+  actorItem: {
+    alignItems: "center",
+    width: 72,
+  },
+
+  actorAvatarWrapper: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    borderWidth: 2,
+    borderColor: "transparent",
+    overflow: "hidden",
+  },
+
+  actorAvatarSelected: {
+    borderColor: "#12CDD9",
+  },
+
+  actorAvatar: {
+    width: "100%",
+    height: "100%",
+  },
+
+  actorName: {
+    color: "#EBEBEF",
+    fontFamily: "MontserratMedium",
+    fontSize: 11,
+    textAlign: "center",
+    marginTop: 6,
+  },
+
+  /* MOVIE LIST */
+  movieList: {
+    gap: 16,
+    marginTop: 12,
+  },
+
+  movieCard: {
     flexDirection: "row",
     marginTop: 16,
   },
 
+  posterWrapper: {
+    position: "relative",
+  },
+
   poster: {
-    width: 120,
-    height: 170,
+    width: 112,
+    height: 147,
     borderRadius: 16,
   },
+
   ratingBadge: {
     position: "absolute",
     top: 8,
     left: 8,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#252836A6",
+    backgroundColor: "rgba(37, 40, 54, 0.8)",
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 8,
+    gap: 4,
   },
 
   ratingText: {
     color: "#FF8700",
-    fontFamily: "MontserratSemiBold", // font-weight: 600
+    fontFamily: "MontserratSemiBold",
     fontSize: 12,
-
-    marginLeft: 4,
   },
 
-  info: {
+  movieInfo: {
     flex: 1,
-    marginLeft: 12,
+    paddingHorizontal: 14,
+    gap: 10,
   },
 
   badge: {
-    backgroundColor: "#FF8700",
     alignSelf: "flex-start",
+    borderRadius: 6,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 6,
   },
 
   badgeText: {
     color: "#FFF",
-    fontFamily: "MontserratMedium", // ✅ dùng đúng key đã import
+    fontFamily: "MontserratMedium",
     fontSize: 10,
-    letterSpacing: 0.12,
   },
 
-  title: {
+  movieTitle: {
     color: "#FFF",
-    fontFamily: "MontserratSemiBold", // ✅ đúng với font-weight: 600
+    fontFamily: "MontserratSemiBold",
     fontSize: 16,
+    fontWeight: "600",
     letterSpacing: 0.12,
-    marginTop: 12,
   },
 
-  meta: {
+  metaRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+
+  metaText: {
     color: "#92929D",
     fontFamily: "MontserratMedium",
     fontSize: 12,
-    letterSpacing: 0.12,
-    marginTop: 14,
-    marginRight: 12,
-    marginTop: 14,
   },
-  type: {
+
+  metaTypeBold: {
     color: "#FFF",
-    fontFamily: "MontserratMedium", // ✅ tương ứng font-weight: 500
-    fontSize: 12,
-    letterSpacing: 0.12,
+    fontFamily: "MontserratSemiBold",
+    fontWeight: "700",
   },
 
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  pg: {
-    marginTop: 12,
-    borderColor: "#12CDD9",
+  pgBadge: {
     borderWidth: 1,
+    borderColor: "#12CDD9",
     borderRadius: 3,
-    paddingHorizontal: 6,
+    paddingHorizontal: 5,
     paddingVertical: 2,
+    marginLeft: 8,
   },
 
   pgText: {
     color: "#12CDD9",
-    fontFamily: "MontserratMedium", // ✅ font-weight: 500
-    fontSize: 12,
-    letterSpacing: 0.12,
+    fontFamily: "MontserratMedium",
+    fontSize: 11,
   },
 
+  separator: {
+    width: 1,
+    height: 14,
+    backgroundColor: "#696974",
+    marginHorizontal: 6,
+    opacity: 0.5,
+  },
+
+  /* ROW BETWEEN */
   rowBetween: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 71,
-    marginBottom: 16,
   },
 
   seeAll: {
     color: "#12CDD9",
-    fontFamily: "MontserratMedium", // ✅ 500
+    fontFamily: "MontserratMedium",
     fontSize: 14,
-
-    marginTop: 18,
+    marginTop: 24,
   },
 
-  recommendCard: {
-    marginRight: 12,
-    marginTop: 16,
+  /* EMPTY STATE */
+  emptyContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 120,
+    paddingHorizontal: 24,
+  },
+
+  emptyIcon: {
     width: 120,
+    height: 120,
+    marginBottom: 28,
   },
 
-  recommendImg: {
-    width: "100%",
-    height: 160,
-    borderRadius: 12,
+  emptyTitle: {
+    color: "#FFF",
+    fontFamily: "MontserratSemiBold",
+    fontSize: 16,
+    fontWeight: "600",
+    textAlign: "center",
+    lineHeight: 24,
+    letterSpacing: 0.12,
+    marginBottom: 12,
   },
 
-  recommendTitle: {
-    color: "#fff",
-    marginTop: 6,
+  emptyDesc: {
+    color: "#92929D",
+    fontFamily: "MontserratMedium",
+    fontSize: 12,
+    textAlign: "center",
+    lineHeight: 18,
+    letterSpacing: 0.12,
   },
 });

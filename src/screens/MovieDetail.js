@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -7,6 +8,8 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
+  Modal,
+  u,
 } from "react-native";
 
 import {
@@ -17,8 +20,13 @@ import {
 } from "@expo/vector-icons";
 
 import BottomTabs from "../navigation/BottomTabs";
+import { useNavigation } from "@react-navigation/native";
+import { useDownload } from "../context/DownloadContext";
 
 export default function MovieDetail() {
+  const navigation = useNavigation();
+  const [shareVisible, setShareVisible] = useState(false);
+  const { addDownload } = useDownload();
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -30,7 +38,7 @@ export default function MovieDetail() {
           <ScrollView showsVerticalScrollIndicator={false}>
             {/* HEADER */}
             <View style={styles.header}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons name="chevron-back" size={26} color="#fff" />
               </TouchableOpacity>
 
@@ -57,11 +65,13 @@ export default function MovieDetail() {
                 />
                 <Text style={styles.infoText}>2021</Text>
               </View>
+              <View style={styles.separator} />
 
               <View style={styles.infoItem}>
                 <Image source={require("../../assets/icons/clock-icon.png")} />
                 <Text style={styles.infoText}>148 Minutes</Text>
               </View>
+              <View style={styles.separator} />
 
               <View style={styles.infoItem}>
                 <Image source={require("../../assets/icons/film-icon.png")} />
@@ -82,11 +92,25 @@ export default function MovieDetail() {
                 <Text style={styles.playText}>Play</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.circleBtn}>
+              <TouchableOpacity
+                style={styles.circleBtn}
+                onPress={() =>
+                  addDownload({
+                    id: "1",
+                    title: "Spider-Man No Way Home",
+                    image: require("../../assets/img/spider-man-poster.png"),
+                    genre: "Action",
+                    type: "Movie",
+                  })
+                }
+              >
                 <Feather name="download" size={20} color="#FF8700" />
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.circleBtn}>
+              <TouchableOpacity
+                style={styles.circleBtn}
+                onPress={() => setShareVisible(true)}
+              >
                 <Image source={require("../../assets/icons/share-icon.png")} />
               </TouchableOpacity>
             </View>
@@ -111,6 +135,45 @@ export default function MovieDetail() {
           </ScrollView>
         </View>
       </ImageBackground>
+      <Modal visible={shareVisible} transparent={true} animationType="fade">
+        <View style={styles.modalOverlay}>
+          <View style={styles.shareModal}>
+            {/* CLOSE BUTTON */}
+            <TouchableOpacity
+              style={styles.closeBtn}
+              onPress={() => setShareVisible(false)}
+            >
+              <Ionicons name="close" size={24} color="#fff" />
+            </TouchableOpacity>
+
+            <Text style={styles.shareTitle}>Share to</Text>
+
+            <View style={styles.shareRow}>
+              <TouchableOpacity style={styles.socialBtnFacebook}>
+                <Image
+                  source={require("../../assets/icons/facebook-icon.png")}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.socialBtnInstagram}>
+                <Image
+                  source={require("../../assets/icons/instagram-icon.png")}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.socialBtnMessenger}>
+                <Image
+                  source={require("../../assets/icons/messenger-icon.png")}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.socialBtnTelegram}>
+                <Image source={require("../../assets/icons/send-icon.png")} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       <BottomTabs />
     </View>
@@ -181,6 +244,13 @@ const styles = StyleSheet.create({
     color: "#92929D",
     fontFamily: "MontserratMedium",
     fontSize: 12,
+  },
+  separator: {
+    width: 1,
+    height: 16,
+    backgroundColor: "#92929D",
+    marginHorizontal: 12,
+    opacity: 0.5,
   },
 
   ratingRow: {
@@ -261,5 +331,81 @@ const styles = StyleSheet.create({
   castContainer: {
     marginTop: 24,
     marginBottom: 120,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.8)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  shareModal: {
+    width: 350,
+    backgroundColor: "#252836",
+    borderRadius: 16,
+    paddingVertical: 13,
+    paddingHorizontal: 19,
+    alignItems: "center",
+  },
+
+  closeBtn: {
+    position: "absolute",
+    top: 13,
+    right: 19,
+    width: 32,
+    height: 32,
+    borderRadius: 12,
+    backgroundColor: "rgba(31, 29, 43, 0.8)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  shareTitle: {
+    color: "#FFF",
+    fontFamily: "MontserratSemiBold",
+    fontSize: 18,
+    fontStyle: "normal",
+    fontWeight: "600",
+    letterSpacing: 0.12,
+    marginTop: 64,
+  },
+
+  shareRow: {
+    flexDirection: "row",
+    marginTop: 48,
+    gap: 16,
+    marginBottom: 51,
+  },
+
+  socialBtnFacebook: {
+    width: 49,
+    height: 49,
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  socialBtnInstagram: {
+    width: 49,
+    height: 49,
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  socialBtnMessenger: {
+    width: 49,
+    height: 49,
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  socialBtnTelegram: {
+    width: 49,
+    height: 49,
+
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
