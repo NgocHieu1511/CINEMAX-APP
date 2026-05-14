@@ -15,55 +15,52 @@ export default function Onboarding3() {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
+      {/* HERO */}
+      <View style={styles.heroSection}>
+        {/* Circle background */}
+        <View style={styles.circle} />
 
-      <View>
-        {/* HERO */}
-        <View style={styles.heroSection}>
-          {/* Circle background */}
-          <View style={styles.circle} />
-
-          {/* Left Card */}
-          <View style={[styles.infoBox, styles.leftCard]}>
-            <Image
-              source={require("../../assets/icons/star.png")}
-              style={styles.icon}
-            />
-            <Text style={styles.infoLabel}>Rating</Text>
-            <Text style={styles.infoValue}>9 /10</Text>
-          </View>
-
-          {/* Right Card */}
-          <View style={[styles.infoBox, styles.rightCard]}>
-            <Image
-              source={require("../../assets/icons/clock.png")}
-              style={styles.icon}
-            />
-            <Text style={styles.infoLabel}>Duration</Text>
-            <Text style={styles.infoValue}>1h 20m</Text>
-          </View>
-
+        {/* Left Card */}
+        <View style={[styles.infoBox, styles.leftCard]}>
           <Image
-            source={require("../../assets/img/onboarding3-img.png")}
-            style={styles.heroImage}
+            source={require("../../assets/icons/star.png")}
+            style={styles.icon}
           />
+          <Text style={styles.infoLabel}>Rating</Text>
+          <Text style={styles.infoValue}>9 /10</Text>
         </View>
 
-        {/* Content */}
-        <View style={styles.content}>
-          <Text style={styles.title}>
-            Offers ad-free viewing of high quality
-          </Text>
-
-          <Text style={styles.description}>
-            Semper in cursus magna et eu varius nunc adipiscing. Elementum
-            justo, laoreet id sem semper parturient.
-          </Text>
+        {/* Right Card */}
+        <View style={[styles.infoBox, styles.rightCard]}>
+          <Image
+            source={require("../../assets/icons/clock.png")}
+            style={styles.icon}
+          />
+          <Text style={styles.infoLabel}>Duration</Text>
+          <Text style={styles.infoValue}>1h 20m</Text>
         </View>
+
+        <Image
+          source={require("../../assets/img/onboarding3-img.png")}
+          style={styles.heroImage}
+        />
+      </View>
+
+      {/* Bottom Section */}
+      <View style={styles.bottomSection}>
+        <Text style={styles.title}>
+          Our service brings together your favorite series
+        </Text>
+
+        <Text style={styles.description}>
+          Semper in cursus magna et eu varius nunc adipiscing. Elementum justo,
+          laoreet id sem semper parturient.
+        </Text>
+
         {/* Pagination */}
         <View style={styles.footer}>
           <View style={styles.dots}>
             <View style={styles.dot} />
-
             <View style={styles.dot} />
             <View style={[styles.dot, styles.activeDot]} />
           </View>
@@ -72,10 +69,7 @@ export default function Onboarding3() {
             style={styles.nextButton}
             onPress={() => navigation.navigate("LoginSignUp")}
           >
-            <Image
-              source={require("../../assets/icons/Next3-icon.png")}
-              style={styles.arrow}
-            />
+            <Image source={require("../../assets/icons/Next3-icon.png")} />
           </TouchableOpacity>
         </View>
       </View>
@@ -87,14 +81,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
 
-    backgroundColor: "#1F1D2B",
+    backgroundColor: "#171725",
 
     paddingTop: 55,
   },
-  content: {
-    alignItems: "center",
+  bottomSection: {
+    flex: 1,
     paddingHorizontal: 24,
+    paddingBottom: 30,
     backgroundColor: "#1F1D2B",
+    marginTop: 6,
   },
 
   topStatus: {
@@ -180,15 +176,16 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "600",
+    color: "#FFF",
     textAlign: "center",
 
     fontFamily: "MontserratSemiBold",
-    letterSpacing: 0.12,
+    fontSize: 18,
+    fontWeight: "600",
+
     lineHeight: 28.8,
-    paddingTop: 37,
+
+    marginTop: 40,
   },
 
   description: {
@@ -197,9 +194,9 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     marginBottom: 30,
     fontFamily: "MontserratMedium",
-    letterSpacing: 0.12,
+
     fontSize: 14,
-    marginTop: 14,
+    marginTop: 10,
   },
 
   footer: {
@@ -207,8 +204,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 30,
-
-    paddingHorizontal: 24, // bù từ 55 về còn 28
+    paddingHorizontal: 24,
+    marginHorizontal: -27, // bù từ 55 về còn 28
   },
 
   dots: {

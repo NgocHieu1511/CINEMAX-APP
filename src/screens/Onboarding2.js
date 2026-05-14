@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 24,
     backgroundColor: "#1F1D2B",
+    marginTop: -10,
   },
   sliderWrapper: {
     flexDirection: "row",
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     overflow: "hidden",
 
-    paddingHorizontal: -10,
+    // paddingHorizontal: -10,
     backgroundColor: "#171725",
   },
 

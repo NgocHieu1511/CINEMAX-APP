@@ -26,14 +26,16 @@ export default function MovieCard({ image, title, category, rating, onPress }) {
     </TouchableOpacity>
   );
 }
+
 const styles = StyleSheet.create({
   card: {
     width: 150,
     borderRadius: 12,
     overflow: "hidden",
     backgroundColor: "#252836",
-    marginRight: 12,
     marginTop: 16,
+
+    // marginRight đã bị xóa — dùng ItemSeparatorComponent trong FlatList
   },
 
   imageWrapper: {
@@ -42,20 +44,21 @@ const styles = StyleSheet.create({
 
   image: {
     width: "100%",
+    height: 210,
+    resizeMode: "cover",
   },
 
   rating: {
     position: "absolute",
     top: 10,
     right: 10,
-
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 8,
-
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
+    gap: 4,
+    backgroundColor: "rgba(37, 40, 54, 0.65)",
   },
 
   ratingText: {
@@ -63,7 +66,6 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat-SemiBold",
     fontSize: 12,
     letterSpacing: 0.12,
-    backgroundColor: "#252836A6",
   },
 
   info: {
