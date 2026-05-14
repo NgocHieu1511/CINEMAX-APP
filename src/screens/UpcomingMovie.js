@@ -44,83 +44,85 @@ export default function UpcomingMovie() {
   return (
     <View style={styles.container}>
       {/* HEADER */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backBtn}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="chevron-back" size={22} color="#fff" />
-        </TouchableOpacity>
-
-        <Text style={styles.headerTitle}>Upcoming Movie</Text>
-
-        <View style={{ width: 36 }} />
-      </View>
-
-      {/* CATEGORY */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.categoryRow}
-      >
-        {categories.map((item, index) => (
+      <View style={styles.content}>
+        <View style={styles.header}>
           <TouchableOpacity
-            key={index}
-            style={[
-              styles.categoryBtn,
-              index === 0 && styles.activeCategoryBtn,
-            ]}
+            style={styles.backBtn}
+            onPress={() => navigation.goBack()}
           >
-            <Text
-              style={[
-                styles.categoryText,
-                index === 0 && styles.activeCategoryText,
-              ]}
-            >
-              {item}
-            </Text>
+            <Ionicons name="chevron-back" size={22} color="#fff" />
           </TouchableOpacity>
-        ))}
-      </ScrollView>
 
-      {/* MOVIES */}
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.movieList}
-      >
-        {movies.map((movie) => (
-          <TouchableOpacity key={movie.id} style={styles.movieCard}>
-            <View style={styles.imageContainer}>
-              <Image source={movie.image} style={styles.movieImage} />
+          <Text style={styles.headerTitle}>Upcoming Movie</Text>
 
+          <View style={{ width: 36 }} />
+        </View>
+
+        {/* CATEGORY */}
+        <View style={styles.categoryWrapper}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.categoryRow}
+          >
+            {categories.map((item, index) => (
               <TouchableOpacity
-                style={styles.playBtn}
-                onPress={() => navigation.navigate("Trailer")}
+                key={index}
+                style={[
+                  styles.categoryBtn,
+                  index === 0 && styles.activeCategoryBtn,
+                ]}
               >
-                <Ionicons name="play" size={24} color="#fff" />
+                <Text
+                  style={[
+                    styles.categoryText,
+                    index === 0 && styles.activeCategoryText,
+                  ]}
+                >
+                  {item}
+                </Text>
               </TouchableOpacity>
-            </View>
+            ))}
+          </ScrollView>
+        </View>
 
-            <Text style={styles.movieTitle}>{movie.title}</Text>
+        {/* MOVIES */}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.movieList}
+        >
+          {movies.map((movie) => (
+            <TouchableOpacity key={movie.id} style={styles.movieCard}>
+              <View style={styles.imageContainer}>
+                <Image source={movie.image} style={styles.movieImage} />
 
-            <View style={styles.infoRow}>
-              <View style={styles.infoItem}>
-                <Feather name="calendar" size={12} color="#92929D" />
-                <Text style={styles.infoText}>{movie.date}</Text>
+                <TouchableOpacity
+                  style={styles.playBtn}
+                  onPress={() => navigation.navigate("Trailer")}
+                >
+                  <Ionicons name="play" size={24} color="#fff" />
+                </TouchableOpacity>
               </View>
 
-              <View style={styles.separator} />
+              <Text style={styles.movieTitle}>{movie.title}</Text>
 
-              <View style={styles.infoItem}>
-                <MaterialIcons name="movie" size={13} color="#92929D" />
-                <Text style={styles.infoText}>{movie.genre}</Text>
+              <View style={styles.infoRow}>
+                <View style={styles.infoItem}>
+                  <Feather name="calendar" size={12} color="#92929D" />
+                  <Text style={styles.infoText}>{movie.date}</Text>
+                </View>
+
+                <View style={styles.separator} />
+
+                <View style={styles.infoItem}>
+                  <MaterialIcons name="movie" size={13} color="#92929D" />
+                  <Text style={styles.infoText}>{movie.genre}</Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        ))}
-
-        <View style={{ height: 120 }} />
-      </ScrollView>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
 
       {/* BOTTOM TAB */}
       <BottomTabs />
@@ -133,6 +135,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#1F1D2B",
     paddingTop: 52,
+  },
+
+  content: {
+    flex: 1,
     paddingHorizontal: 24,
   },
 
@@ -156,50 +162,48 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "MontserratSemiBold",
     fontSize: 16,
-    fontStyle: "normal",
     fontWeight: "600",
     letterSpacing: 0.12,
   },
 
-  categoryRow: {
+  categoryWrapper: {
     marginTop: 24,
+    height: 44,
+  },
+
+  categoryRow: {
+    alignItems: "center",
     paddingRight: 24,
   },
 
   categoryBtn: {
-    flexDirection: "row",
-    paddingVertical: 8,
-    paddingHorizontal: 32,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    marginRight: 12,
     justifyContent: "center",
     alignItems: "center",
-    gap: 10,
-    borderRadius: 12,
   },
 
   activeCategoryBtn: {
-    backgroundColor: "#2A2A3D",
+    backgroundColor: "#252836",
   },
 
   categoryText: {
     color: "#EBEBEF",
     fontFamily: "MontserratMedium",
     fontSize: 12,
-    fontStyle: "normal",
     fontWeight: "500",
     letterSpacing: 0.12,
   },
 
   activeCategoryText: {
     color: "#12CDD9",
-    fontFamily: "MontserratMedium",
-    fontSize: 12,
-    fontStyle: "normal",
-    fontWeight: "500",
-    letterSpacing: 0.12,
   },
 
   movieList: {
-    paddingTop: 21,
+    marginTop: 21,
+    paddingBottom: 120,
   },
 
   movieCard: {
@@ -233,9 +237,7 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontFamily: "MontserratSemiBold",
     fontSize: 16,
-    fontStyle: "normal",
     fontWeight: "600",
-
     marginTop: 10,
   },
 
@@ -254,7 +256,6 @@ const styles = StyleSheet.create({
     color: "#92929D",
     fontFamily: "MontserratMedium",
     fontSize: 12,
-    fontStyle: "normal",
     fontWeight: "500",
     marginLeft: 4,
   },
@@ -265,29 +266,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#92929D",
     opacity: 0.5,
     marginHorizontal: 12,
-  },
-
-  bottomTab: {
-    position: "absolute",
-    bottom: 24,
-    left: 24,
-    right: 24,
-    height: 68,
-    backgroundColor: "#252836",
-    borderRadius: 20,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-  },
-
-  tabItem: {
-    alignItems: "center",
-  },
-
-  activeTabText: {
-    color: "#12CDD9",
-    fontSize: 11,
-    marginTop: 4,
-    fontFamily: "MontserratMedium",
   },
 });

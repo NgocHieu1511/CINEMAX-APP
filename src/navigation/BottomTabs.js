@@ -15,7 +15,7 @@ import profileIcon from "../../assets/icons/account-icon.png";
 import profileActiveIcon from "../../assets/icons/account-active.png";
 
 export default function BottomTabs() {
-  const homeScreens = ["MovieDetail", "Trailer", "UpcomingMovie"];
+  const homeScreens = ["MovieDetail", "Trailer", "UpcomingMovies"];
   const profileScreens = ["EditProfile"];
   const navigation = useNavigation();
   const route = useRoute();

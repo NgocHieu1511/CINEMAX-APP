@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
+  Modal,
 } from "react-native";
 
 import { Ionicons, Feather, FontAwesome } from "@expo/vector-icons";
@@ -38,11 +39,11 @@ const EPISODES = [
   {
     id: "1",
     title: "Episode 1",
-    duration: "1h33m",
+    duration: "1h30m",
     badge: "Premium",
     thumbnail: require("../../assets/img/ep-img.png"),
     description:
-      "Football player who longs to write his own music. It's not all smiles for this hunk though after he gets involved with his music teacher.",
+      "Football player who longs to write his own music. It’s not all smiles for this hunk though after he gets involved with his music teacher.",
   },
   {
     id: "2",
@@ -51,20 +52,17 @@ const EPISODES = [
     badge: "Premium",
     thumbnail: require("../../assets/img/ep-img.png"),
     description:
-      "Football player who longs to write his own music. It's not all smiles for this hunk though after he gets involved with his music teacher.",
+      "Football player who longs to write his own music. It’s not all smiles for this hunk though after he gets involved with his music teacher.",
   },
 ];
 
-const SEASONS = ["Season 1", "Season 2", "Season 3", "Season 4"];
+const SEASONS = ["Season 1", "Season 2", "Season 3", "Season 4", "Season 5"];
 
 export default function SerialDetail() {
   const navigation = useNavigation();
-  const [selectedSeason, setSelectedSeason] = useState("Season 2");
-  const [seasonDropdown, setSeasonDropdown] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
 
-  const storyLine =
-    "Originally a story from Archie Comics which started in 1941, Riverdale centres around a group of high school students who are shocked by the death of classmate, Jason Blossom. Together they unravel the secrets of Riverdale and who";
+  const [selectedSeason, setSelectedSeason] = useState("Season 2");
+  const [seasonModalVisible, setSeasonModalVisible] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -78,13 +76,13 @@ export default function SerialDetail() {
             {/* HEADER */}
             <View style={styles.header}>
               <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Ionicons name="chevron-back" size={26} color="#fff" />
+                <Ionicons name="chevron-back" size={26} color="#FFF" />
               </TouchableOpacity>
 
               <Text style={styles.headerTitle}>Riverdale</Text>
 
               <TouchableOpacity style={styles.heartBtn}>
-                <Ionicons name="heart" size={24} color="#FB4141" />
+                <Ionicons name="heart" size={22} color="#FB4141" />
               </TouchableOpacity>
             </View>
 
@@ -104,12 +102,14 @@ export default function SerialDetail() {
                 />
                 <Text style={styles.infoText}>2021</Text>
               </View>
+
               <View style={styles.separator} />
 
               <View style={styles.infoItem}>
                 <Image source={require("../../assets/icons/clock-icon.png")} />
                 <Text style={styles.infoText}>148 Minutes</Text>
               </View>
+
               <View style={styles.separator} />
 
               <View style={styles.infoItem}>
@@ -121,13 +121,15 @@ export default function SerialDetail() {
             {/* RATING */}
             <View style={styles.ratingRow}>
               <FontAwesome name="star" size={16} color="#FF8700" />
+
               <Text style={styles.ratingText}>4.5</Text>
             </View>
 
             {/* BUTTONS */}
             <View style={styles.buttonRow}>
               <TouchableOpacity style={styles.trailerBtn}>
-                <Ionicons name="play" size={18} color="#fff" />
+                <Ionicons name="play" size={18} color="#FFF" />
+
                 <Text style={styles.trailerText}>Trailer</Text>
               </TouchableOpacity>
 
@@ -143,16 +145,17 @@ export default function SerialDetail() {
             {/* STORY LINE */}
             <View style={styles.storyContainer}>
               <Text style={styles.sectionTitle}>Story Line</Text>
+
               <Text style={styles.storyText}>
                 Originally a story from Archie Comics which started in 1941,
                 Riverdale centres around a group of high school students who are
-                shocked by the death of classmate, Jason Blossom. Together
-                theyunravel the secrets of Riverdale and who
+                shocked by the death of classmate, Jason Blossom. Together they
+                unravel the secrets of Riverdale and who
                 <Text style={styles.moreText}> More</Text>
               </Text>
             </View>
 
-            {/* CAST AND CREW */}
+            {/* CAST */}
             <View style={styles.castContainer}>
               <Text style={styles.sectionTitle}>Cast and Crew</Text>
             </View>
@@ -165,8 +168,10 @@ export default function SerialDetail() {
               {CAST.map((person) => (
                 <View key={person.id} style={styles.castItem}>
                   <Image source={person.avatar} style={styles.castAvatar} />
+
                   <View style={styles.castInfo}>
                     <Text style={styles.castName}>{person.name}</Text>
+
                     <Text style={styles.castRole}>{person.role}</Text>
                   </View>
                 </View>
@@ -177,79 +182,52 @@ export default function SerialDetail() {
             <View style={styles.episodeContainer}>
               <Text style={styles.sectionTitle}>Episode</Text>
 
-              {/* SEASON DROPDOWN */}
+              {/* SEASON */}
               <TouchableOpacity
                 style={styles.seasonSelector}
-                onPress={() => setSeasonDropdown(!seasonDropdown)}
+                onPress={() => setSeasonModalVisible(true)}
               >
                 <Text style={styles.seasonText}>{selectedSeason}</Text>
-                <Ionicons
-                  name={seasonDropdown ? "chevron-up" : "chevron-down"}
-                  size={16}
-                  color="#fff"
-                />
-              </TouchableOpacity>
 
-              {/* DROPDOWN LIST */}
-              {seasonDropdown && (
-                <View style={styles.dropdownList}>
-                  {SEASONS.map((season) => (
-                    <TouchableOpacity
-                      key={season}
-                      style={styles.dropdownItem}
-                      onPress={() => {
-                        setSelectedSeason(season);
-                        setSeasonDropdown(false);
-                      }}
-                    >
-                      <Text
-                        style={[
-                          styles.dropdownItemText,
-                          selectedSeason === season &&
-                            styles.dropdownItemActive,
-                        ]}
-                      >
-                        {season}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              )}
+                <Ionicons name="chevron-down" size={16} color="#FFF" />
+              </TouchableOpacity>
 
               {/* EPISODE LIST */}
               {EPISODES.map((ep) => (
                 <View key={ep.id} style={styles.episodeCard}>
-                  {/* THUMBNAIL */}
-                  <View style={styles.thumbnailWrapper}>
-                    <Image
-                      source={ep.thumbnail}
-                      style={styles.episodeThumbnail}
-                    />
-                    <TouchableOpacity style={styles.playBtn}>
-                      <Ionicons name="play" size={20} color="#fff" />
-                    </TouchableOpacity>
+                  {/* TOP */}
+                  <View style={styles.episodeTop}>
+                    {/* IMAGE */}
+                    <View style={styles.thumbnailWrapper}>
+                      <Image
+                        source={ep.thumbnail}
+                        style={styles.episodeThumbnail}
+                      />
 
-                    {/* BADGE + DURATION */}
-                    <View style={styles.episodeMeta}>
+                      <TouchableOpacity style={styles.playBtn}>
+                        <Ionicons name="play" size={20} color="#FFF" />
+                      </TouchableOpacity>
+                    </View>
+
+                    {/* INFO */}
+                    <View style={styles.episodeInfo}>
                       <View style={styles.premiumBadge}>
                         <Text style={styles.premiumText}>{ep.badge}</Text>
                       </View>
+
                       <Text style={styles.durationText}>{ep.duration}</Text>
+
+                      <Text style={styles.episodeTitle}>{ep.title}</Text>
                     </View>
+
+                    {/* DOWNLOAD */}
+                    <TouchableOpacity style={styles.downloadBtn}>
+                      <Feather name="download" size={24} color="#FF8700" />
+                    </TouchableOpacity>
                   </View>
 
-                  {/* EPISODE INFO */}
-                  <View style={styles.episodeInfo}>
-                    <View style={styles.episodeTitleRow}>
-                      <Text style={styles.episodeTitle}>{ep.title}</Text>
-                      <TouchableOpacity>
-                        <Feather name="download" size={18} color="#FF8700" />
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={styles.episodeDesc} numberOfLines={3}>
-                      {ep.description}
-                    </Text>
-                  </View>
+                  {/* DESCRIPTION */}
+                  <Text style={styles.episodeDesc}>{ep.description}</Text>
                 </View>
               ))}
             </View>
@@ -257,7 +235,43 @@ export default function SerialDetail() {
         </View>
       </ImageBackground>
 
-      <BottomTabs />
+      {/* MODAL */}
+      <Modal visible={seasonModalVisible} transparent animationType="fade">
+        <TouchableOpacity
+          activeOpacity={1}
+          style={styles.modalOverlay}
+          onPress={() => setSeasonModalVisible(false)}
+        >
+          <View style={styles.seasonModal}>
+            <TouchableOpacity
+              style={styles.closeBtn}
+              onPress={() => setSeasonModalVisible(false)}
+            >
+              <Ionicons name="close" size={20} color="#FFF" />
+            </TouchableOpacity>
+
+            {SEASONS.map((season) => (
+              <TouchableOpacity
+                key={season}
+                style={styles.seasonItem}
+                onPress={() => {
+                  setSelectedSeason(season);
+                  setSeasonModalVisible(false);
+                }}
+              >
+                <Text
+                  style={[
+                    styles.seasonItemText,
+                    selectedSeason === season && styles.seasonItemActive,
+                  ]}
+                >
+                  {season}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -278,7 +292,6 @@ const styles = StyleSheet.create({
     paddingTop: 52,
   },
 
-  /* HEADER */
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -288,20 +301,20 @@ const styles = StyleSheet.create({
 
   headerTitle: {
     color: "#FFF",
-    textAlign: "center",
     fontFamily: "MontserratSemiBold",
     fontSize: 16,
     fontWeight: "600",
   },
 
   heartBtn: {
-    backgroundColor: "#252836",
-    padding: 6,
+    width: 40,
+    height: 40,
     borderRadius: 12,
-    opacity: 0.9,
+    backgroundColor: "#252836",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
-  /* POSTER */
   posterContainer: {
     alignItems: "center",
     marginTop: 28,
@@ -313,13 +326,11 @@ const styles = StyleSheet.create({
     borderRadius: 24,
   },
 
-  /* INFO ROW */
   infoRow: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 24,
-    paddingHorizontal: 24,
   },
 
   infoItem: {
@@ -338,11 +349,10 @@ const styles = StyleSheet.create({
     width: 1,
     height: 16,
     backgroundColor: "#92929D",
-    marginHorizontal: 12,
     opacity: 0.5,
+    marginHorizontal: 12,
   },
 
-  /* RATING */
   ratingRow: {
     flexDirection: "row",
     justifyContent: "center",
@@ -357,7 +367,6 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
 
-  /* BUTTONS */
   buttonRow: {
     flexDirection: "row",
     justifyContent: "center",
@@ -385,14 +394,13 @@ const styles = StyleSheet.create({
   circleBtn: {
     width: 54,
     height: 54,
-    borderRadius: 27,
+    borderRadius: 999,
     backgroundColor: "#252836",
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 6,
   },
 
-  /* STORY LINE */
   storyContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
@@ -403,14 +411,14 @@ const styles = StyleSheet.create({
     fontFamily: "MontserratSemiBold",
     fontSize: 16,
     fontWeight: "600",
-    marginBottom: 12,
+    marginBottom: 8,
   },
 
   storyText: {
     color: "#EBEBEF",
     fontFamily: "MontserratRegular",
     fontSize: 14,
-    lineHeight: 22,
+    lineHeight: 24,
     letterSpacing: 0.12,
   },
 
@@ -419,7 +427,6 @@ const styles = StyleSheet.create({
     fontFamily: "MontserratSemiBold",
   },
 
-  /* CAST */
   castContainer: {
     marginTop: 24,
     paddingHorizontal: 24,
@@ -429,7 +436,7 @@ const styles = StyleSheet.create({
     paddingLeft: 24,
     paddingRight: 8,
     gap: 12,
-    marginTop: 4,
+    marginTop: 16,
   },
 
   castItem: {
@@ -441,7 +448,7 @@ const styles = StyleSheet.create({
   castAvatar: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: 999,
   },
 
   castInfo: {
@@ -451,8 +458,7 @@ const styles = StyleSheet.create({
   castName: {
     color: "#FFF",
     fontFamily: "MontserratSemiBold",
-    fontSize: 12,
-    fontWeight: "600",
+    fontSize: 14,
   },
 
   castRole: {
@@ -461,7 +467,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
 
-  /* EPISODE */
   episodeContainer: {
     marginTop: 24,
     paddingHorizontal: 24,
@@ -471,51 +476,32 @@ const styles = StyleSheet.create({
   seasonSelector: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
+    gap: 5,
     marginBottom: 16,
   },
 
   seasonText: {
     color: "#FFF",
-    fontFamily: "MontserratSemiBold",
-    fontSize: 14,
-    fontWeight: "600",
-  },
-
-  dropdownList: {
-    backgroundColor: "#252836",
-    borderRadius: 12,
-    paddingVertical: 8,
-    marginBottom: 12,
-  },
-
-  dropdownItem: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-
-  dropdownItemText: {
-    color: "#92929D",
     fontFamily: "MontserratMedium",
     fontSize: 14,
   },
 
-  dropdownItemActive: {
-    color: "#FF8700",
-    fontFamily: "MontserratSemiBold",
+  episodeCard: {
+    backgroundColor: "#252836",
+    borderRadius: 16,
+    padding: 12,
+    marginBottom: 16,
   },
 
-  /* EPISODE CARD */
-  episodeCard: {
+  episodeTop: {
     flexDirection: "row",
-    marginBottom: 20,
-    gap: 12,
+    alignItems: "center",
   },
 
   thumbnailWrapper: {
-    width: 112,
-    height: 100,
-    borderRadius: 12,
+    width: 121,
+    height: 83,
+    borderRadius: 8,
     overflow: "hidden",
     position: "relative",
   },
@@ -528,52 +514,44 @@ const styles = StyleSheet.create({
 
   playBtn: {
     position: "absolute",
-    top: "35%",
-    left: "35%",
-    backgroundColor: "rgba(0,0,0,0.5)",
-    borderRadius: 20,
-    padding: 6,
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -20 }, { translateY: -20 }],
+    width: 40,
+    height: 40,
+    borderRadius: 999,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
-  episodeMeta: {
-    position: "absolute",
-    top: 8,
-    left: 8,
-    gap: 4,
+  episodeInfo: {
+    flex: 1,
+    marginLeft: 16,
   },
 
   premiumBadge: {
     backgroundColor: "#FF8700",
-    borderRadius: 4,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
     alignSelf: "flex-start",
+    marginBottom: 4,
   },
 
   premiumText: {
     color: "#FFF",
     fontFamily: "MontserratMedium",
-    fontSize: 9,
+    fontSize: 10,
     fontWeight: "500",
   },
 
   durationText: {
-    color: "#FFF",
+    color: "#92929D",
     fontFamily: "MontserratMedium",
-    fontSize: 10,
-  },
-
-  /* EPISODE INFO */
-  episodeInfo: {
-    flex: 1,
-    justifyContent: "flex-start",
-  },
-
-  episodeTitleRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 6,
+    fontSize: 12,
+    fontWeight: "500",
+    marginBottom: 4,
   },
 
   episodeTitle: {
@@ -583,10 +561,65 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
+  downloadBtn: {
+    width: 52,
+    height: 52,
+    borderRadius: 999,
+    backgroundColor: "#1F1D2B",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
   episodeDesc: {
-    color: "#92929D",
+    marginTop: 11,
+    color: "#EBEBEF",
     fontFamily: "MontserratRegular",
-    fontSize: 12,
-    lineHeight: 18,
+    fontSize: 14,
+    fontWeight: "400",
+    lineHeight: 22.4,
+  },
+
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.85)",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 32,
+  },
+
+  seasonModal: {
+    width: "100%",
+    backgroundColor: "#252836",
+    borderRadius: 16,
+    paddingVertical: 24,
+    paddingHorizontal: 24,
+  },
+
+  closeBtn: {
+    position: "absolute",
+    top: 16,
+    right: 16,
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    backgroundColor: "rgba(31,29,43,0.8)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  seasonItem: {
+    paddingVertical: 14,
+  },
+
+  seasonItemText: {
+    color: "#696974",
+    fontFamily: "MontserratSemiBold",
+    fontSize: 16,
+    textAlign: "center",
+  },
+
+  seasonItemActive: {
+    color: "#FFF",
+    fontSize: 20,
   },
 });

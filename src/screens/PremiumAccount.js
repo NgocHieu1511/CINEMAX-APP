@@ -207,7 +207,6 @@ const styles = StyleSheet.create({
     fontFamily: "MontserratSemiBold",
     fontSize: 16,
     fontWeight: "600",
-    letterSpacing: 0.12,
   },
 
   /* BADGE */
@@ -225,21 +224,19 @@ const styles = StyleSheet.create({
 
   badgeText: {
     color: "#FFF",
-    fontFamily: "MontserratSemiBold",
-    fontSize: 14,
-    fontWeight: "600",
-    letterSpacing: 0.12,
+    fontFamily: "MontserratMedium",
+    fontSize: 16,
+    fontWeight: "500",
   },
 
   /* TITLE */
   title: {
     color: "#FFF",
-    fontFamily: "MontserratSemiBold",
-    fontSize: 20,
-    fontWeight: "600",
     textAlign: "center",
-    letterSpacing: 0.12,
-    lineHeight: 30,
+    fontFamily: "MontserratSemiBold",
+    fontSize: 18,
+    fontWeight: "600",
+
     marginTop: 20,
     paddingHorizontal: 24,
   },
@@ -269,13 +266,11 @@ const styles = StyleSheet.create({
   },
 
   cardTitle: {
-    color: "#92929D",
-    fontFamily: "MontserratSemiBold",
-    fontSize: 14,
-    fontWeight: "600",
+    color: "#FFF",
     textAlign: "center",
-    lineHeight: 22,
-    letterSpacing: 0.12,
+    fontFamily: "MontserratSemiBold",
+    fontSize: 16,
+    fontWeight: "600",
   },
 
   cardTitleActive: {
@@ -283,9 +278,9 @@ const styles = StyleSheet.create({
   },
 
   cardPrice: {
-    color: "#92929D",
+    color: "#FFF",
     fontFamily: "MontserratBold",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "700",
     marginTop: 12,
     textAlign: "center",
@@ -301,7 +296,7 @@ const styles = StyleSheet.create({
   },
 
   cardPeriod: {
-    color: "#92929D",
+    color: "#FFF",
     fontFamily: "MontserratMedium",
     fontSize: 12,
     marginTop: 4,
